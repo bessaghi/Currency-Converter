@@ -1,0 +1,15 @@
+<mat-form-field floatLabel="always" class="p-10">
+  <mat-label>Rate</mat-label>
+  <input matInput
+         placeholder="Rate"
+         type="number"
+         [(ngModel)]="rate"
+  >
+</mat-form-field>
+
+<button mat-fab aria-label="Save rate" (click)="changeRate()">
+  <mat-icon aria-hidden="false"
+            aria-label="Save"
+            fontIcon="check_circle"
+  />
+</button>

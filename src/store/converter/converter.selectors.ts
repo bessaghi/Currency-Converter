@@ -13,3 +13,8 @@ export const result = createSelector(
   converter,
   (state: ConverterState) => state.result
 )
+
+export const rate = createSelector(
+  converter,
+  (state: ConverterState) => state.rate
+)

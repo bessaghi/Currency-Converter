@@ -16,3 +16,8 @@ export const convertFromEurToUSD = createAction(
 export const swapCurrency = createAction(
   '[Converter] Swap currencies'
 );
+
+export const updateRate = createAction(
+  '[Converter] Update rate',
+  props<{rate: number}>()
+);
