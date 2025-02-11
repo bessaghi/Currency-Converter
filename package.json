@@ -24,6 +24,7 @@
     "@ngrx/store": "^19.0.1",
     "@tailwindcss/postcss": "^4.0.5",
     "rxjs": "~7.8.0",
+    "rxjs-marbles": "^7.0.1",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
   },

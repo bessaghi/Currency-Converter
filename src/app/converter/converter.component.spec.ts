@@ -1,16 +1,28 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {ConverterComponent} from './converter.component';
+import {MockStore, provideMockStore} from '@ngrx/store/testing';
+import {Store} from '@ngrx/store';
+import {randomlyChangeAmount} from '../../store/converter/converter.actions';
+import {provideNoopAnimations} from '@angular/platform-browser/animations';
 
 describe('ConverterComponent', () => {
   let component: ConverterComponent;
   let fixture: ComponentFixture<ConverterComponent>;
+  let store: MockStore;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ConverterComponent]
+      imports: [ConverterComponent],
+      providers: [
+        provideMockStore(),
+        provideNoopAnimations()
+      ]
     })
     .compileComponents();
+
+    store = TestBed.inject(Store) as MockStore;
+    spyOn(store, 'dispatch');
 
     fixture = TestBed.createComponent(ConverterComponent);
     component = fixture.componentInstance;
@@ -21,9 +33,7 @@ describe('ConverterComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it(`should initialize the value to 1.1`, () => {
-    const fixture = TestBed.createComponent(ConverterComponent);
-    const app = fixture.componentInstance;
-    expect(app.value).toEqual(1.1);
+  it(`should dispatch the randomlyChangeAmount on init`, () => {
+    expect(store.dispatch).toHaveBeenCalledWith(randomlyChangeAmount());
   });
 });

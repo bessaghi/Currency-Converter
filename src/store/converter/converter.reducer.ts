@@ -1,5 +1,5 @@
 import {createReducer, on} from '@ngrx/store';
-import {convertFromEurToUSD, updateAmount} from './converter.actions';
+import {convertFromEurToUSD, swapCurrency, updateAmount} from './converter.actions';
 import {initialConverterState} from './converter.state';
 import {ConverterUtils} from './converter.utils';
 
@@ -16,6 +16,15 @@ export const converterReducer = createReducer(
       {
         ...state,
         result: ConverterUtils.convertEurToUsd(state)
+      }
+    )
+  ),
+  on(swapCurrency, state => (
+      {
+        ...state,
+        amount: state.result,
+        result: state.amount,
+        rate: 1 / state.rate
       }
     )
   )

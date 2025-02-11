@@ -5,13 +5,15 @@
          type="number"
          [ngModel]="value$ | async"
   >
-  <div matTextSuffix>EUR</div>
+  <div matTextSuffix>{{source}}</div>
 </mat-form-field>
 
-<mat-icon aria-hidden="false"
-          aria-label="Swap"
-          fontIcon="swap_horiz"
-/>
+<button mat-fab aria-label="Swap currency" (click)="onSwap()">
+  <mat-icon aria-hidden="false"
+            aria-label="Swap"
+            fontIcon="swap_horiz"
+  />
+</button>
 
 <mat-form-field floatLabel="always" class="p-10">
   <mat-label>Result</mat-label>
@@ -20,5 +22,5 @@
          type="number"
          [ngModel]="result$ | async"
   >
-  <div matTextSuffix>USD</div>
+  <div matTextSuffix>{{destination}}</div>
 </mat-form-field>
