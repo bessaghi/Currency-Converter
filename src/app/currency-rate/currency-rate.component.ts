@@ -27,6 +27,8 @@ export class CurrencyRateComponent implements OnInit {
 
   rate: number
 
+  reelRate = 1.03
+
   constructor(private store: Store<AppState>,
               private destroyRef: DestroyRef) {
   }
@@ -39,5 +41,13 @@ export class CurrencyRateComponent implements OnInit {
 
   changeRate() {
     this.store.dispatch(updateRate({rate: this.rate}))
+  }
+
+  isRateInvalid = () => {
+    const rateInvalid = this.rate >= 1.02 * this.reelRate;
+    if (rateInvalid) {
+      this.store.dispatch(updateRate({rate: this.reelRate}))
+    }
+    return rateInvalid;
   }
 }
