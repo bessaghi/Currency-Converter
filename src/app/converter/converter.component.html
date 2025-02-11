@@ -1,6 +1,24 @@
-<mat-form-field>
+<mat-form-field floatLabel="always" class="p-10">
   <mat-label>Value</mat-label>
   <input matInput
          placeholder="Value"
-         [(ngModel)]="value">
+         type="number"
+         [ngModel]="value$ | async"
+  >
+  <div matTextSuffix>EUR</div>
+</mat-form-field>
+
+<mat-icon aria-hidden="false"
+          aria-label="Swap"
+          fontIcon="swap_horiz"
+/>
+
+<mat-form-field floatLabel="always" class="p-10">
+  <mat-label>Result</mat-label>
+  <input matInput
+         placeholder="Result"
+         type="number"
+         [ngModel]="result$ | async"
+  >
+  <div matTextSuffix>USD</div>
 </mat-form-field>

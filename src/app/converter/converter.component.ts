@@ -1,10 +1,15 @@
-import {Component, DestroyRef, inject, OnInit} from '@angular/core';
-import {interval, map, startWith} from 'rxjs';
+import {Component, OnInit} from '@angular/core';
+import {Observable} from 'rxjs';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {FormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {MatCardModule} from '@angular/material/card';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {MatIcon} from '@angular/material/icon';
+import {AppState} from '../../store/app.state';
+import {select, Store} from '@ngrx/store';
+import {randomlyChangeAmount} from '../../store/converter/converter.actions';
+import {amount, result} from '../../store/converter/converter.selectors';
+import {AsyncPipe} from '@angular/common';
 
 @Component({
   selector: 'converter',
@@ -12,7 +17,9 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
     MatFormFieldModule,
     FormsModule,
     MatInputModule,
-    MatCardModule
+    MatCardModule,
+    MatIcon,
+    AsyncPipe
   ],
   standalone: true,
   templateUrl: './converter.component.html'
@@ -20,15 +27,18 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 export class ConverterComponent implements OnInit {
 
   value = 1.1;
-  destroyRef = inject(DestroyRef)
+  convertedValue = 0;
+  eurToUsdRate = 1.03;
 
-  ngOnInit() {
-    interval(3000).pipe(
-      startWith(null),
-      map(() => Math.random() * 0.1 - 0.05),
-      map(randomValue => +randomValue.toFixed(3)),
-      takeUntilDestroyed(this.destroyRef)
-    ).subscribe(randomValue => this.value += randomValue);
+  value$: Observable<number>;
+  result$: Observable<number>;
+
+  constructor(private store: Store<AppState>) {
   }
 
+  ngOnInit() {
+    this.store.dispatch(randomlyChangeAmount());
+    this.value$ = this.store.pipe(select(amount));
+    this.result$ = this.store.pipe(select(result));
+  }
 }
