@@ -3,6 +3,8 @@ import {ConverterComponent} from './converter/converter.component';
 import {MatToolbar} from '@angular/material/toolbar';
 import {MatIcon} from '@angular/material/icon';
 import {CurrencyRateComponent} from './currency-rate/currency-rate.component';
+import {MatCardModule} from '@angular/material/card';
+import {HistoryComponent} from './history/history.component';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +14,9 @@ import {CurrencyRateComponent} from './currency-rate/currency-rate.component';
     ConverterComponent,
     MatToolbar,
     MatIcon,
-    CurrencyRateComponent
+    CurrencyRateComponent,
+    MatCardModule,
+    HistoryComponent,
   ]
 })
 export class AppComponent {

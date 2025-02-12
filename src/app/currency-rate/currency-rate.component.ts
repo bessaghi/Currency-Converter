@@ -1,14 +1,14 @@
-import {Component, DestroyRef, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {AppState} from '../../store/app.state';
-import {rate} from '../../store/converter/converter.selectors';
+import {fixedRate, rateInvalid} from '../../store/converter/converter.selectors';
 import {FormsModule} from '@angular/forms';
 import {MatFormField, MatLabel} from '@angular/material/form-field';
 import {MatInput} from '@angular/material/input';
-import {MatFabButton} from '@angular/material/button';
-import {MatIcon} from '@angular/material/icon';
-import {updateRate} from '../../store/converter/converter.actions';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {MatButton} from '@angular/material/button';
+import {updateFixedRate, useFixedRate, useRealRate} from '../../store/converter/converter.actions';
+import {Observable} from 'rxjs';
+import {AsyncPipe} from '@angular/common';
 
 @Component({
   selector: 'currency-rate',
@@ -17,37 +17,31 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
     MatFormField,
     MatInput,
     MatLabel,
-    MatFabButton,
-    MatIcon
+    MatButton,
+    AsyncPipe
   ],
   standalone: true,
   templateUrl: './currency-rate.component.html'
 })
 export class CurrencyRateComponent implements OnInit {
 
-  rate: number
+  fixedRate$: Observable<number>
+  rateInvalid$: Observable<boolean>
 
-  reelRate = 1.03
-
-  constructor(private store: Store<AppState>,
-              private destroyRef: DestroyRef) {
+  constructor(private store: Store<AppState>) {
   }
 
   ngOnInit() {
-    this.store.pipe(select(rate))
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(rate => this.rate = rate);
+    this.store.dispatch(useRealRate());
+    this.rateInvalid$ = this.store.pipe(select(rateInvalid));
+    this.fixedRate$ = this.store.pipe(select(fixedRate));
   }
 
-  changeRate() {
-    this.store.dispatch(updateRate({rate: this.rate}))
+  updateFixedRate(rate: number) {
+    this.store.dispatch(updateFixedRate({rate: rate}))
   }
 
-  isRateInvalid = () => {
-    const rateInvalid = this.rate >= 1.02 * this.reelRate;
-    if (rateInvalid) {
-      this.store.dispatch(updateRate({rate: this.reelRate}))
-    }
-    return rateInvalid;
+  useFixedRate() {
+    this.store.dispatch(useFixedRate())
   }
 }

@@ -1,16 +1,16 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {CurrencyRateComponent} from './currency-rate.component';
+import {HistoryComponent} from './history.component';
 import {provideMockStore} from '@ngrx/store/testing';
 import {provideNoopAnimations} from '@angular/platform-browser/animations';
 
-describe('CurrencyRateComponent', () => {
-  let component: CurrencyRateComponent;
-  let fixture: ComponentFixture<CurrencyRateComponent>;
+describe('HistoryComponent', () => {
+  let component: HistoryComponent;
+  let fixture: ComponentFixture<HistoryComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CurrencyRateComponent],
+      imports: [HistoryComponent],
       providers: [
         provideMockStore(),
         provideNoopAnimations()
@@ -18,7 +18,7 @@ describe('CurrencyRateComponent', () => {
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(CurrencyRateComponent);
+    fixture = TestBed.createComponent(HistoryComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

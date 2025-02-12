@@ -7,8 +7,8 @@ import {MatCardModule} from '@angular/material/card';
 import {MatIcon} from '@angular/material/icon';
 import {AppState} from '../../store/app.state';
 import {select, Store} from '@ngrx/store';
-import {randomlyChangeAmount, swapCurrency} from '../../store/converter/converter.actions';
-import {amount, result} from '../../store/converter/converter.selectors';
+import {randomlyChangeRate, swapCurrency, updateAmount} from '../../store/converter/converter.actions';
+import {amount, destinationCurrency, result, sourceCurrency} from '../../store/converter/converter.selectors';
 import {AsyncPipe} from '@angular/common';
 import {MatFabButton} from '@angular/material/button';
 
@@ -28,23 +28,27 @@ import {MatFabButton} from '@angular/material/button';
 })
 export class ConverterComponent implements OnInit {
 
-  value$: Observable<number>;
+  amount$: Observable<number>;
   result$: Observable<number>;
-
-  source = 'EUR';
-  destination = 'USD';
+  source$: Observable<string>;
+  destination$: Observable<string>;
 
   constructor(private store: Store<AppState>) {
   }
 
   ngOnInit() {
-    this.store.dispatch(randomlyChangeAmount());
-    this.value$ = this.store.pipe(select(amount));
+    this.store.dispatch(randomlyChangeRate());
+    this.amount$ = this.store.pipe(select(amount));
     this.result$ = this.store.pipe(select(result));
+    this.source$ = this.store.pipe(select(sourceCurrency));
+    this.destination$ = this.store.pipe(select(destinationCurrency));
   }
 
   onSwap() {
     this.store.dispatch(swapCurrency());
-    [this.source, this.destination] = [this.destination, this.source];
+  }
+
+  updateResult(amount: number) {
+    this.store.dispatch(updateAmount({amount: amount}))
   }
 }
